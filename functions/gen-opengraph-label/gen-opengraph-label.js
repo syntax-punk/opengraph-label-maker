@@ -13,7 +13,7 @@ exports.handler = async function(event, ctx) {
       <meta charset="UTF-8">
     </head>
     <body>
-      <div id="dexter"><div>Hello FELLAS!!!</div></div>
+      <div id="dexter"><div>NO IMAGE DATA :(</div></div>
     </body>
     </html>
   `)
