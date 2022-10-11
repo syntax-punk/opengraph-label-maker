@@ -4,7 +4,17 @@ exports.handler = async function(event, ctx) {
   const browser = await playwright.launchChromium();
   const context = await browser.newContext();
   const page = await context.newPage();
-  await page.setContent('<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Document</title></head><body><div> id="dexter"><div>Hello FELLAS!!!</div></div></body></html>');
+  await page.setContent(`
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="UTF-8">
+    </head>
+    <body>
+      <div id="dexter"><div>Hello FELLAS!!!</div></div>
+    </body>
+    </html>
+  `)
   const bbox = await page.evaluate(() => {
     const dexter = document.getElementById("dexter");
     const { x, y, width, height } = dexter.children[0].getBoundingClientRect();
