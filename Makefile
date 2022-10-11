@@ -1,2 +1,2 @@
 install:
-	cd functions/gen-opengraph-label && npm i
+	cd functions/gen-opengraph-label && npm i && npm run build
