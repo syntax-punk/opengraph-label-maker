@@ -1,4 +1,4 @@
-var labelBundle = (function () {
+(function () {
             'use strict';
 
             function _mergeNamespaces(n, m) {
@@ -19,10 +19,6 @@ var labelBundle = (function () {
             var global$1 = (typeof global !== "undefined" ? global :
                         typeof self !== "undefined" ? self :
                         typeof window !== "undefined" ? window : {});
-
-            function getDefaultExportFromCjs (x) {
-            	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
-            }
 
             function getAugmentedNamespace(n) {
               var f = n.default;
@@ -200,19 +196,26 @@ var labelBundle = (function () {
             	return ReactPropTypesSecret_1;
             }
 
-            (function (module) {
+            var hasRequiredReact;
 
-            	{
-            	  module.exports = requireReact_production_min();
-            	}
+            function requireReact () {
+            	if (hasRequiredReact) return react.exports;
+            	hasRequiredReact = 1;
+            	(function (module) {
+
+            		{
+            		  module.exports = requireReact_production_min();
+            		}
             } (react));
+            	return react.exports;
+            }
 
-            var index = /*@__PURE__*/getDefaultExportFromCjs(react.exports);
+            var reactExports = requireReact();
 
             var React = /*#__PURE__*/_mergeNamespaces({
                         __proto__: null,
-                        default: index
-            }, [react.exports]);
+                        default: reactExports
+            }, [reactExports]);
 
             /*
 
@@ -1839,7 +1842,7 @@ var labelBundle = (function () {
             var isBrowser = typeof document !== 'undefined';
             var hasOwnProperty = {}.hasOwnProperty;
 
-            var EmotionCacheContext = /* #__PURE__ */react.exports.createContext( // we're doing this to avoid preconstruct's dead code elimination in this one case
+            var EmotionCacheContext = /* #__PURE__ */reactExports.createContext( // we're doing this to avoid preconstruct's dead code elimination in this one case
             // because this module is primarily intended for the browser and node
             // but it's also required in react native and similar environments sometimes
             // and we could have a special build just for that
@@ -1853,9 +1856,9 @@ var labelBundle = (function () {
 
             var withEmotionCache = function withEmotionCache(func) {
               // $FlowFixMe
-              return /*#__PURE__*/react.exports.forwardRef(function (props, ref) {
+              return /*#__PURE__*/reactExports.forwardRef(function (props, ref) {
                 // the cache will never be null in the browser
-                var cache = react.exports.useContext(EmotionCacheContext);
+                var cache = reactExports.useContext(EmotionCacheContext);
                 return func(props, cache, ref);
               });
             };
@@ -1863,7 +1866,7 @@ var labelBundle = (function () {
             if (!isBrowser) {
               withEmotionCache = function withEmotionCache(func) {
                 return function (props) {
-                  var cache = react.exports.useContext(EmotionCacheContext);
+                  var cache = reactExports.useContext(EmotionCacheContext);
 
                   if (cache === null) {
                     // yes, we're potentially creating this on every render
@@ -1874,7 +1877,7 @@ var labelBundle = (function () {
                     cache = createCache({
                       key: 'css'
                     });
-                    return /*#__PURE__*/react.exports.createElement(EmotionCacheContext.Provider, {
+                    return /*#__PURE__*/reactExports.createElement(EmotionCacheContext.Provider, {
                       value: cache
                     }, func(props, cache));
                   } else {
@@ -1884,7 +1887,7 @@ var labelBundle = (function () {
               };
             }
 
-            var ThemeContext = /* #__PURE__ */react.exports.createContext({});
+            var ThemeContext = /* #__PURE__ */reactExports.createContext({});
 
             var typePropName = '__EMOTION_TYPE_PLEASE_DO_NOT_USE__';
             var createEmotionProps = function createEmotionProps(type, props) {
@@ -1922,7 +1925,7 @@ var labelBundle = (function () {
                   next = next.next;
                 }
 
-                return /*#__PURE__*/react.exports.createElement("style", (_ref2 = {}, _ref2["data-emotion"] = cache.key + " " + serializedNames, _ref2.dangerouslySetInnerHTML = {
+                return /*#__PURE__*/reactExports.createElement("style", (_ref2 = {}, _ref2["data-emotion"] = cache.key + " " + serializedNames, _ref2.dangerouslySetInnerHTML = {
                   __html: rules
                 }, _ref2.nonce = cache.sheet.nonce, _ref2));
               }
@@ -1949,7 +1952,7 @@ var labelBundle = (function () {
                 className = props.className + " ";
               }
 
-              var serialized = serializeStyles(registeredStyles, undefined, react.exports.useContext(ThemeContext));
+              var serialized = serializeStyles(registeredStyles, undefined, reactExports.useContext(ThemeContext));
 
               className += cache.key + "-" + serialized.name;
               var newProps = {};
@@ -1962,11 +1965,11 @@ var labelBundle = (function () {
 
               newProps.ref = ref;
               newProps.className = className;
-              return /*#__PURE__*/react.exports.createElement(react.exports.Fragment, null, /*#__PURE__*/react.exports.createElement(Insertion, {
+              return /*#__PURE__*/reactExports.createElement(reactExports.Fragment, null, /*#__PURE__*/reactExports.createElement(Insertion, {
                 cache: cache,
                 serialized: serialized,
                 isStringTag: typeof WrappedComponent === 'string'
-              }), /*#__PURE__*/react.exports.createElement(WrappedComponent, newProps));
+              }), /*#__PURE__*/reactExports.createElement(WrappedComponent, newProps));
             });
 
             var jsx = function jsx(type, props) {
@@ -1974,7 +1977,7 @@ var labelBundle = (function () {
 
               if (props == null || !hasOwnProperty.call(props, 'css')) {
                 // $FlowFixMe
-                return react.exports.createElement.apply(undefined, args);
+                return reactExports.createElement.apply(undefined, args);
               }
 
               var argsLength = args.length;
@@ -1987,7 +1990,7 @@ var labelBundle = (function () {
               } // $FlowFixMe
 
 
-              return react.exports.createElement.apply(null, createElementArgArray);
+              return reactExports.createElement.apply(null, createElementArgArray);
             };
             // initial render from browser, insertBefore context.sheet.tags[0] or if a style hasn't been inserted there yet, appendChild
             // initial client-side render from SSR, use place of hydrating tag
@@ -1995,7 +1998,7 @@ var labelBundle = (function () {
             var Global = /* #__PURE__ */withEmotionCache(function (props, cache) {
 
               var styles = props.styles;
-              var serialized = serializeStyles([styles], undefined, react.exports.useContext(ThemeContext));
+              var serialized = serializeStyles([styles], undefined, reactExports.useContext(ThemeContext));
 
               if (!isBrowser) {
                 var _ref;
@@ -2020,7 +2023,7 @@ var labelBundle = (function () {
                   return null;
                 }
 
-                return /*#__PURE__*/react.exports.createElement("style", (_ref = {}, _ref["data-emotion"] = cache.key + "-global " + serializedNames, _ref.dangerouslySetInnerHTML = {
+                return /*#__PURE__*/reactExports.createElement("style", (_ref = {}, _ref["data-emotion"] = cache.key + "-global " + serializedNames, _ref.dangerouslySetInnerHTML = {
                   __html: rules
                 }, _ref.nonce = cache.sheet.nonce, _ref));
               } // yes, i know these hooks are used conditionally
@@ -2029,7 +2032,7 @@ var labelBundle = (function () {
               // so it's not actually breaking anything
 
 
-              var sheetRef = react.exports.useRef();
+              var sheetRef = reactExports.useRef();
               useInsertionEffectWithLayoutFallback(function () {
                 var sheetRefCurrent = sheetRef.current;
                 var sheet = sheetRefCurrent[0],
@@ -2594,7 +2597,7 @@ var labelBundle = (function () {
 
             var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-            var _react = react.exports;
+            var _react = requireReact();
 
             var _react2 = _interopRequireDefault$1(_react);
 
@@ -2968,7 +2971,7 @@ var labelBundle = (function () {
             function requireReactDom_production_min () {
             	if (hasRequiredReactDom_production_min) return reactDom_production_min;
             	hasRequiredReactDom_production_min = 1;
-            var aa=react.exports,n=requireObjectAssign(),r=requireScheduler();function u(a){for(var b="https://reactjs.org/docs/error-decoder.html?invariant="+a,c=1;c<arguments.length;c++)b+="&args[]="+encodeURIComponent(arguments[c]);return "Minified React error #"+a+"; visit "+b+" for the full message or use the non-minified dev environment for full errors and additional helpful warnings."}if(!aa)throw Error(u(227));
+            var aa=requireReact(),n=requireObjectAssign(),r=requireScheduler();function u(a){for(var b="https://reactjs.org/docs/error-decoder.html?invariant="+a,c=1;c<arguments.length;c++)b+="&args[]="+encodeURIComponent(arguments[c]);return "Minified React error #"+a+"; visit "+b+" for the full message or use the non-minified dev environment for full errors and additional helpful warnings."}if(!aa)throw Error(u(227));
             	function ba(a,b,c,d,e,f,g,h,k){var l=Array.prototype.slice.call(arguments,3);try{b.apply(c,l);}catch(m){this.onError(m);}}var da=!1,ea=null,fa=!1,ha=null,ia={onError:function(a){da=!0;ea=a;}};function ja(a,b,c,d,e,f,g,h,k){da=!1;ea=null;ba.apply(ia,arguments);}function ka(a,b,c,d,e,f,g,h,k){ja.apply(this,arguments);if(da){if(da){var l=ea;da=!1;ea=null;}else throw Error(u(198));fa||(fa=!0,ha=l);}}var la=null,ma=null,na=null;
             	function oa(a,b,c){var d=a.type||"unknown-event";a.currentTarget=na(c);ka(d,b,void 0,a);a.currentTarget=null;}var pa=null,qa={};
             	function ra(){if(pa)for(var a in qa){var b=qa[a],c=pa.indexOf(a);if(!(-1<c))throw Error(u(96,a));if(!sa[c]){if(!b.extractEvents)throw Error(u(97,a));sa[c]=b;c=b.eventTypes;for(var d in c){var e=void 0;var f=c[d],g=b,h=d;if(ta.hasOwnProperty(h))throw Error(u(99,h));ta[h]=f;var k=f.phasedRegistrationNames;if(k){for(e in k)k.hasOwnProperty(e)&&ua(k[e],g,h);e=!0;}else f.registrationName?(ua(f.registrationName,g,h),e=!0):e=!1;if(!e)throw Error(u(98,d,a));}}}}
@@ -3346,7 +3349,7 @@ var labelBundle = (function () {
                 }
               }, jsx("li", null, "image"), jsx("li", null, "yack")), jsx("span", null, "@theVoogie"))));
             }
-            reactDom.exports.render(jsx(App, null), document.getElementById("dexter"));
+            reactDom.exports.render(jsx(App, null), document.getElementById("root"));
 
             return App;
 

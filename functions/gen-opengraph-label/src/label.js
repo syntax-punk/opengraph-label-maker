@@ -90,4 +90,4 @@ export default function App() {
   );
 }
 
-render(<div>kek</div>, document.getElementById("dexter"));
+render(<App />, document.getElementById("root"));
