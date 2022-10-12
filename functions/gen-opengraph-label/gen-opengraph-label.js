@@ -7,18 +7,8 @@ exports.handler = async function(event, ctx) {
   const browser = await playwright.launchChromium();
   const context = await browser.newContext();
   const page = await context.newPage();
-  await page.setContent(`
-    <!DOCTYPE html>
-    <html>
-    <head>
-      <meta charset="UTF-8">
-    </head>
-    <body>
-      <div id="root"><div>NO IMAGE DATA :(</div></div>
-    </body>
-    </html>
-  `)
-  await page.addScriptTag({ content: script });
+  await page.goto('http://localhost:3000');
+
   const bbox = await page.evaluate(() => {
     const root = document.getElementById("root");
     const { x, y, width, height } = root.children[0].getBoundingClientRect();
