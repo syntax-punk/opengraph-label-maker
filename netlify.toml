@@ -1,6 +1,3 @@
 [build]
   functions = "functions"
   command = "make install"
-
-[functions]
-  node_bundler = "esbuild"
