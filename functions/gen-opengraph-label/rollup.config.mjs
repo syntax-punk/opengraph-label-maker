@@ -10,8 +10,7 @@ const config = {
   output: [
     {
       file: "label.js",
-      format: "iife",
-      name: "labelBundle"
+      format: "iife"
     }
   ],
   plugins: [
@@ -23,8 +22,7 @@ const config = {
     }),
     commonjs(),
     replace({
-      "process.env.NODE_ENV": JSON.stringify("production"),
-      preventAssignment: true
+      "process.env.NODE_ENV": JSON.stringify("production")
     }),
     globals(),
     builtins()
