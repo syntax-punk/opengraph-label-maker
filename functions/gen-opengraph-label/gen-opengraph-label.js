@@ -3,9 +3,6 @@ import fs from "node:fs";
 import path, { dirname } from "node:path";
 import { fileURLToPath } from 'node:url';
 
-const __dirname = path.dirname(__filename);
-console.log("--> __dname: ", __dirname);
-
 const script = fs.readFileSync(path.resolve("./label.js"), "utf-8");
 
 export const handler = async function(event, ctx) {
