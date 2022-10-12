@@ -20,6 +20,10 @@
                         typeof self !== "undefined" ? self :
                         typeof window !== "undefined" ? window : {});
 
+            function getDefaultExportFromCjs (x) {
+            	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
+            }
+
             function getAugmentedNamespace(n) {
               var f = n.default;
             	if (typeof f == "function") {
@@ -196,26 +200,19 @@
             	return ReactPropTypesSecret_1;
             }
 
-            var hasRequiredReact;
+            (function (module) {
 
-            function requireReact () {
-            	if (hasRequiredReact) return react.exports;
-            	hasRequiredReact = 1;
-            	(function (module) {
-
-            		{
-            		  module.exports = requireReact_production_min();
-            		}
+            	{
+            	  module.exports = requireReact_production_min();
+            	}
             } (react));
-            	return react.exports;
-            }
 
-            var reactExports = requireReact();
+            var index = /*@__PURE__*/getDefaultExportFromCjs(react.exports);
 
             var React = /*#__PURE__*/_mergeNamespaces({
                         __proto__: null,
-                        default: reactExports
-            }, [reactExports]);
+                        default: index
+            }, [react.exports]);
 
             /*
 
@@ -1099,21 +1096,6 @@
             			}
             }
 
-            var weakMemoize = function weakMemoize(func) {
-              // $FlowFixMe flow doesn't include all non-primitive types as allowed for weakmaps
-              var cache = new WeakMap();
-              return function (arg) {
-                if (cache.has(arg)) {
-                  // $FlowFixMe
-                  return cache.get(arg);
-                }
-
-                var ret = func(arg);
-                cache.set(arg, ret);
-                return ret;
-              };
-            };
-
             function memoize(fn) {
               var cache = Object.create(null);
               return function (arg) {
@@ -1247,21 +1229,12 @@
               }
             };
 
-            var isBrowser$3 = typeof document !== 'undefined';
-            var getServerStylisCache = isBrowser$3 ? undefined : weakMemoize(function () {
-              return memoize(function () {
-                var cache = {};
-                return function (name) {
-                  return cache[name];
-                };
-              });
-            });
             var defaultStylisPlugins = [prefixer];
 
             var createCache = function createCache(options) {
               var key = options.key;
 
-              if (isBrowser$3 && key === 'css') {
+              if ( key === 'css') {
                 var ssrStyles = document.querySelectorAll("style[data-emotion]:not([data-s])"); // get SSRed styles out of the way of React's hydration
                 // document.head is a safe place to move them to(though note document.head is not necessarily the last place they will be)
                 // note this very very intentionally targets all style elements regardless of the key to ensure
@@ -1290,7 +1263,7 @@
               var container;
               var nodesToHydrate = [];
 
-              if (isBrowser$3) {
+              {
                 container = options.container || document.head;
                 Array.prototype.forEach.call( // this means we will ignore elements which don't have a space in them which
                 // means that the style elements we're looking at are only Emotion 11 server-rendered style elements
@@ -1309,7 +1282,7 @@
 
               var omnipresentPlugins = [compat, removeLabel];
 
-              if (isBrowser$3) {
+              {
                 var currentSheet;
                 var finalizingPlugins = [stringify, rulesheet(function (rule) {
                   currentSheet.insert(rule);
@@ -1327,56 +1300,6 @@
 
                   if (shouldCache) {
                     cache.inserted[serialized.name] = true;
-                  }
-                };
-              } else {
-                var _finalizingPlugins = [stringify];
-
-                var _serializer = middleware(omnipresentPlugins.concat(stylisPlugins, _finalizingPlugins));
-
-                var _stylis = function _stylis(styles) {
-                  return serialize(compile(styles), _serializer);
-                }; // $FlowFixMe
-
-
-                var serverStylisCache = getServerStylisCache(stylisPlugins)(key);
-
-                var getRules = function getRules(selector, serialized) {
-                  var name = serialized.name;
-
-                  if (serverStylisCache[name] === undefined) {
-                    serverStylisCache[name] = _stylis(selector ? selector + "{" + serialized.styles + "}" : serialized.styles);
-                  }
-
-                  return serverStylisCache[name];
-                };
-
-                _insert = function _insert(selector, serialized, sheet, shouldCache) {
-                  var name = serialized.name;
-                  var rules = getRules(selector, serialized);
-
-                  if (cache.compat === undefined) {
-                    // in regular mode, we don't set the styles on the inserted cache
-                    // since we don't need to and that would be wasting memory
-                    // we return them so that they are rendered in a style tag
-                    if (shouldCache) {
-                      cache.inserted[name] = true;
-                    }
-
-                    return rules;
-                  } else {
-                    // in compat mode, we put the styles on the inserted cache so
-                    // that emotion-server can pull out the styles
-                    // except when we don't want to cache it which was in Global but now
-                    // is nowhere but we don't want to do a major right now
-                    // and just in case we're going to leave the case here
-                    // it's also not affecting client side bundle size
-                    // so it's really not a big deal
-                    if (shouldCache) {
-                      cache.inserted[name] = rules;
-                    } else {
-                      return rules;
-                    }
                   }
                 };
               }
@@ -1454,7 +1377,7 @@
             TYPE_STATICS[reactIs.ForwardRef] = FORWARD_REF_STATICS;
             TYPE_STATICS[reactIs.Memo] = MEMO_STATICS;
 
-            var isBrowser$2 = typeof document !== 'undefined';
+            var isBrowser = "object" !== 'undefined';
             function getRegisteredStyles(registered, registeredStyles, classNames) {
               var rawClassName = '';
               classNames.split(' ').forEach(function (className) {
@@ -1478,7 +1401,7 @@
               // in node since emotion-server relies on whether a style is in
               // the registered cache to know whether a style is global or not
               // also, note that this check will be dead code eliminated in the browser
-              isBrowser$2 === false && cache.compat !== undefined) && cache.registered[className] === undefined) {
+              isBrowser === false ) && cache.registered[className] === undefined) {
                 cache.registered[className] = serialized.styles;
               }
             };
@@ -1487,22 +1410,13 @@
               var className = cache.key + "-" + serialized.name;
 
               if (cache.inserted[serialized.name] === undefined) {
-                var stylesForSSR = '';
                 var current = serialized;
 
                 do {
-                  var maybeStyles = cache.insert(serialized === current ? "." + className : '', current, cache.sheet, true);
-
-                  if (!isBrowser$2 && maybeStyles !== undefined) {
-                    stylesForSSR += maybeStyles;
-                  }
+                  cache.insert(serialized === current ? "." + className : '', current, cache.sheet, true);
 
                   current = current.next;
                 } while (current !== undefined);
-
-                if (!isBrowser$2 && stylesForSSR.length !== 0) {
-                  return stylesForSSR;
-                }
               }
             };
 
@@ -1829,20 +1743,12 @@
               };
             };
 
-            var isBrowser$1 = typeof document !== 'undefined';
-
-            var syncFallback = function syncFallback(create) {
-              return create();
-            };
-
             var useInsertionEffect = React['useInsertion' + 'Effect'] ;
-            var useInsertionEffectAlwaysWithSyncFallback = !isBrowser$1 ? syncFallback : useInsertionEffect ;
             var useInsertionEffectWithLayoutFallback = useInsertionEffect ;
 
-            var isBrowser = typeof document !== 'undefined';
             var hasOwnProperty = {}.hasOwnProperty;
 
-            var EmotionCacheContext = /* #__PURE__ */reactExports.createContext( // we're doing this to avoid preconstruct's dead code elimination in this one case
+            var EmotionCacheContext = /* #__PURE__ */react.exports.createContext( // we're doing this to avoid preconstruct's dead code elimination in this one case
             // because this module is primarily intended for the browser and node
             // but it's also required in react native and similar environments sometimes
             // and we could have a special build just for that
@@ -1856,38 +1762,14 @@
 
             var withEmotionCache = function withEmotionCache(func) {
               // $FlowFixMe
-              return /*#__PURE__*/reactExports.forwardRef(function (props, ref) {
+              return /*#__PURE__*/react.exports.forwardRef(function (props, ref) {
                 // the cache will never be null in the browser
-                var cache = reactExports.useContext(EmotionCacheContext);
+                var cache = react.exports.useContext(EmotionCacheContext);
                 return func(props, cache, ref);
               });
             };
 
-            if (!isBrowser) {
-              withEmotionCache = function withEmotionCache(func) {
-                return function (props) {
-                  var cache = reactExports.useContext(EmotionCacheContext);
-
-                  if (cache === null) {
-                    // yes, we're potentially creating this on every render
-                    // it doesn't actually matter though since it's only on the server
-                    // so there will only every be a single render
-                    // that could change in the future because of suspense and etc. but for now,
-                    // this works and i don't want to optimise for a future thing that we aren't sure about
-                    cache = createCache({
-                      key: 'css'
-                    });
-                    return /*#__PURE__*/reactExports.createElement(EmotionCacheContext.Provider, {
-                      value: cache
-                    }, func(props, cache));
-                  } else {
-                    return func(props, cache);
-                  }
-                };
-              };
-            }
-
-            var ThemeContext = /* #__PURE__ */reactExports.createContext({});
+            var ThemeContext = /* #__PURE__ */react.exports.createContext({});
 
             var typePropName = '__EMOTION_TYPE_PLEASE_DO_NOT_USE__';
             var createEmotionProps = function createEmotionProps(type, props) {
@@ -1910,25 +1792,6 @@
                   serialized = _ref.serialized,
                   isStringTag = _ref.isStringTag;
               registerStyles(cache, serialized, isStringTag);
-              var rules = useInsertionEffectAlwaysWithSyncFallback(function () {
-                return insertStyles(cache, serialized, isStringTag);
-              });
-
-              if (!isBrowser && rules !== undefined) {
-                var _ref2;
-
-                var serializedNames = serialized.name;
-                var next = serialized.next;
-
-                while (next !== undefined) {
-                  serializedNames += ' ' + next.name;
-                  next = next.next;
-                }
-
-                return /*#__PURE__*/reactExports.createElement("style", (_ref2 = {}, _ref2["data-emotion"] = cache.key + " " + serializedNames, _ref2.dangerouslySetInnerHTML = {
-                  __html: rules
-                }, _ref2.nonce = cache.sheet.nonce, _ref2));
-              }
 
               return null;
             };
@@ -1952,7 +1815,7 @@
                 className = props.className + " ";
               }
 
-              var serialized = serializeStyles(registeredStyles, undefined, reactExports.useContext(ThemeContext));
+              var serialized = serializeStyles(registeredStyles, undefined, react.exports.useContext(ThemeContext));
 
               className += cache.key + "-" + serialized.name;
               var newProps = {};
@@ -1965,11 +1828,11 @@
 
               newProps.ref = ref;
               newProps.className = className;
-              return /*#__PURE__*/reactExports.createElement(reactExports.Fragment, null, /*#__PURE__*/reactExports.createElement(Insertion, {
+              return /*#__PURE__*/react.exports.createElement(react.exports.Fragment, null, /*#__PURE__*/react.exports.createElement(Insertion, {
                 cache: cache,
                 serialized: serialized,
                 isStringTag: typeof WrappedComponent === 'string'
-              }), /*#__PURE__*/reactExports.createElement(WrappedComponent, newProps));
+              }), /*#__PURE__*/react.exports.createElement(WrappedComponent, newProps));
             });
 
             var jsx = function jsx(type, props) {
@@ -1977,7 +1840,7 @@
 
               if (props == null || !hasOwnProperty.call(props, 'css')) {
                 // $FlowFixMe
-                return reactExports.createElement.apply(undefined, args);
+                return react.exports.createElement.apply(undefined, args);
               }
 
               var argsLength = args.length;
@@ -1990,7 +1853,7 @@
               } // $FlowFixMe
 
 
-              return reactExports.createElement.apply(null, createElementArgArray);
+              return react.exports.createElement.apply(null, createElementArgArray);
             };
             // initial render from browser, insertBefore context.sheet.tags[0] or if a style hasn't been inserted there yet, appendChild
             // initial client-side render from SSR, use place of hydrating tag
@@ -1998,41 +1861,13 @@
             var Global = /* #__PURE__ */withEmotionCache(function (props, cache) {
 
               var styles = props.styles;
-              var serialized = serializeStyles([styles], undefined, reactExports.useContext(ThemeContext));
-
-              if (!isBrowser) {
-                var _ref;
-
-                var serializedNames = serialized.name;
-                var serializedStyles = serialized.styles;
-                var next = serialized.next;
-
-                while (next !== undefined) {
-                  serializedNames += ' ' + next.name;
-                  serializedStyles += next.styles;
-                  next = next.next;
-                }
-
-                var shouldCache = cache.compat === true;
-                var rules = cache.insert("", {
-                  name: serializedNames,
-                  styles: serializedStyles
-                }, cache.sheet, shouldCache);
-
-                if (shouldCache) {
-                  return null;
-                }
-
-                return /*#__PURE__*/reactExports.createElement("style", (_ref = {}, _ref["data-emotion"] = cache.key + "-global " + serializedNames, _ref.dangerouslySetInnerHTML = {
-                  __html: rules
-                }, _ref.nonce = cache.sheet.nonce, _ref));
-              } // yes, i know these hooks are used conditionally
+              var serialized = serializeStyles([styles], undefined, react.exports.useContext(ThemeContext));
               // but it is based on a constant that will never change at runtime
               // it's effectively like having two implementations and switching them out
               // so it's not actually breaking anything
 
 
-              var sheetRef = reactExports.useRef();
+              var sheetRef = react.exports.useRef();
               useInsertionEffectWithLayoutFallback(function () {
                 var sheetRefCurrent = sheetRef.current;
                 var sheet = sheetRefCurrent[0],
@@ -2597,7 +2432,7 @@
 
             var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-            var _react = requireReact();
+            var _react = react.exports;
 
             var _react2 = _interopRequireDefault$1(_react);
 
@@ -2971,7 +2806,7 @@
             function requireReactDom_production_min () {
             	if (hasRequiredReactDom_production_min) return reactDom_production_min;
             	hasRequiredReactDom_production_min = 1;
-            var aa=requireReact(),n=requireObjectAssign(),r=requireScheduler();function u(a){for(var b="https://reactjs.org/docs/error-decoder.html?invariant="+a,c=1;c<arguments.length;c++)b+="&args[]="+encodeURIComponent(arguments[c]);return "Minified React error #"+a+"; visit "+b+" for the full message or use the non-minified dev environment for full errors and additional helpful warnings."}if(!aa)throw Error(u(227));
+            var aa=react.exports,n=requireObjectAssign(),r=requireScheduler();function u(a){for(var b="https://reactjs.org/docs/error-decoder.html?invariant="+a,c=1;c<arguments.length;c++)b+="&args[]="+encodeURIComponent(arguments[c]);return "Minified React error #"+a+"; visit "+b+" for the full message or use the non-minified dev environment for full errors and additional helpful warnings."}if(!aa)throw Error(u(227));
             	function ba(a,b,c,d,e,f,g,h,k){var l=Array.prototype.slice.call(arguments,3);try{b.apply(c,l);}catch(m){this.onError(m);}}var da=!1,ea=null,fa=!1,ha=null,ia={onError:function(a){da=!0;ea=a;}};function ja(a,b,c,d,e,f,g,h,k){da=!1;ea=null;ba.apply(ia,arguments);}function ka(a,b,c,d,e,f,g,h,k){ja.apply(this,arguments);if(da){if(da){var l=ea;da=!1;ea=null;}else throw Error(u(198));fa||(fa=!0,ha=l);}}var la=null,ma=null,na=null;
             	function oa(a,b,c){var d=a.type||"unknown-event";a.currentTarget=na(c);ka(d,b,void 0,a);a.currentTarget=null;}var pa=null,qa={};
             	function ra(){if(pa)for(var a in qa){var b=qa[a],c=pa.indexOf(a);if(!(-1<c))throw Error(u(96,a));if(!sa[c]){if(!b.extractEvents)throw Error(u(97,a));sa[c]=b;c=b.eventTypes;for(var d in c){var e=void 0;var f=c[d],g=b,h=d;if(ta.hasOwnProperty(h))throw Error(u(99,h));ta[h]=f;var k=f.phasedRegistrationNames;if(k){for(e in k)k.hasOwnProperty(e)&&ua(k[e],g,h);e=!0;}else f.registrationName?(ua(f.registrationName,g,h),e=!0):e=!1;if(!e)throw Error(u(98,d,a));}}}}
