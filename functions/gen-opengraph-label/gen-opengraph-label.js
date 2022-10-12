@@ -4,7 +4,7 @@ import path from "node:path";
 import { fileURLToPath } from 'node:url';
 
 
-const script = fs.readFileSync(path.resolve(__dirname, "label.js"), "utf-8");
+const script = fs.readFileSync("./label.js", "utf-8");
 
 export const handler = async function(event, ctx) {
   const browser = await playwright.launchChromium();
