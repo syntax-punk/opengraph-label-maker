@@ -3,7 +3,7 @@ import { jsx, Global } from "@emotion/react";
 import Textfit from "react-textfit";
 import { render } from "react-dom";
 
-export default function App() {
+function App() {
   return (
     <div
       css={{

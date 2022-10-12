@@ -5,6 +5,7 @@ import builtins from "rollup-plugin-node-builtins";
 import globals from "rollup-plugin-node-globals";
 import replace from "@rollup/plugin-replace";
 
+const extensions = ['.js', '.ts', '.tsx'];
 
 const config = {
   input: "src/label.js",
@@ -15,13 +16,14 @@ const config = {
     }
   ],
   plugins: [
-    resolve({ browser: true }),
+    resolve({ extensions }),
+    commonjs({ include: /node_modules/ }),
     babel({
-      exclude: 'node_modules/**',
-      presets: ['@babel/env', '@babel/preset-react'],
-      babelHelpers: 'bundled'
+      extensions,
+      exclude: /node_modules/,
+      babelrc: false,
+      presets: ["@babel/preset-env", "@babel/preset-react"]
     }),
-    commonjs(),
     replace({
       "process.env.NODE_ENV": JSON.stringify("production")
     }),
