@@ -16,12 +16,12 @@ const config = {
   ],
   plugins: [
     resolve({ browser: true }),
-    commonjs(),
     babel({
       exclude: 'node_modules/**',
       presets: ['@babel/env', '@babel/preset-react'],
       babelHelpers: 'bundled'
     }),
+    commonjs(),
     replace({
       "process.env.NODE_ENV": JSON.stringify("production")
     }),
