@@ -23,19 +23,7 @@ const config = {
       exclude: /node_modules/,
       babelrc: false,
       presets: ["@babel/preset-env", "@babel/preset-react"],
-      plugins: [
-        'react-require',
-        '@babel/plugin-syntax-dynamic-import',
-        '@babel/plugin-proposal-class-properties',
-        ['@babel/plugin-proposal-object-rest-spread', {
-          useBuiltIns: true,
-        }],
-        ['@babel/plugin-transform-runtime', {
-          corejs: 3,
-          regenerator: true,
-          useESModules: false,
-        }],
-      ],
+      babelHelpers: "inline"
     }),
     replace({
       "process.env.NODE_ENV": JSON.stringify("production")
