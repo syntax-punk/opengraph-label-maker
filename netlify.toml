@@ -2,11 +2,4 @@
   functions = "functions"
   base = "functions/gen-opengraph-label"
   publish = "build"
-  command = "npm i --legacy-peer-deps && npm run build"
-
-[build.environment]
-  NODE_VERSION = "10"
-  NPM_FLAGS = "--legacy-peer-deps"
-
-
-
+  command = "make install"
