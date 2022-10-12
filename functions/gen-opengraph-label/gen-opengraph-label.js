@@ -1,10 +1,12 @@
 import playwright from "playwright-aws-lambda";
 import fs from "node:fs";
-import path from "node:path";
+import path, { dirname } from "node:path";
 import { fileURLToPath } from 'node:url';
 
+const __dirname = path.dirname(__filename);
+console.log("--> __dname: ", __dirname);
 
-const script = fs.readFileSync(path.resolve(process.cwd(), "label.js"), "utf-8");
+const script = fs.readFileSync(path.resolve(__dirname, "label.js"), "utf-8");
 
 export const handler = async function(event, ctx) {
   const browser = await playwright.launchChromium();
