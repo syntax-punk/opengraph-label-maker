@@ -18,7 +18,7 @@ exports.handler = async function(event, ctx) {
     </body>
     </html>
   `)
-  await page.addScriptTag({ content: script });
+  // await page.addScriptTag({ content: script });
   const bbox = await page.evaluate(() => {
     const root = document.getElementById("root");
     const { x, y, width, height } = root.children[0].getBoundingClientRect();
