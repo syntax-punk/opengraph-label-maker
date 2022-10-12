@@ -7,7 +7,7 @@ exports.handler = async function(event, ctx) {
   const browser = await playwright.launchChromium();
   const context = await browser.newContext();
   const page = await context.newPage();
-  await page.goto('http://localhost:3000');
+  await page.goto('https://earnest-youtiao-7b4d2a.netlify.app');
 
   const bbox = await page.evaluate(() => {
     const root = document.getElementById("root");
