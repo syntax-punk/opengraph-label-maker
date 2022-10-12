@@ -13,14 +13,14 @@ exports.handler = async function(event, ctx) {
       <meta charset="UTF-8">
     </head>
     <body>
-      <div id="dexter"><div>NO IMAGE DATA :(</div></div>
+      <div id="root"><div>NO IMAGE DATA :(</div></div>
     </body>
     </html>
   `)
   await page.addScriptTag({ content: script });
   const bbox = await page.evaluate(() => {
-    const dexter = document.getElementById("dexter");
-    const { x, y, width, height } = dexter.children[0].getBoundingClientRect();
+    const root = document.getElementById("root");
+    const { x, y, width, height } = root.children[0].getBoundingClientRect();
     console.log('---> here you go: ', { x, y, width, height })
     return { x, y, width, height };
   });
