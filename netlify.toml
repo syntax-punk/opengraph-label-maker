@@ -1,3 +1,5 @@
 [build]
   functions = "functions"
-  command = "make install"
+  base = "functions/gen-opengraph-label"
+  publish = "build"
+  command = "npm i --legacy-peer-deps && npm run build"
