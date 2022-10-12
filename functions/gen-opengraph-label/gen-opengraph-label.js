@@ -1,11 +1,9 @@
-import playwright from "playwright-aws-lambda";
-import fs from "node:fs";
-import path, { dirname } from "node:path";
-import { fileURLToPath } from 'node:url';
+const playwright = require("playwright-aws-lambda");
+const fs = require('fs');
+const path = require('path');
+const script = fs.readFileSync(path.resolve(__dirname, "label.js"), "utf-8");
 
-const script = fs.readFileSync(path.resolve("./label.js"), "utf-8");
-
-export const handler = async function(event, ctx) {
+exports.handler = async function(event, ctx) {
   const browser = await playwright.launchChromium();
   const context = await browser.newContext();
   const page = await context.newPage();
@@ -20,7 +18,7 @@ export const handler = async function(event, ctx) {
     </body>
     </html>
   `)
-  // await page.addScriptTag({ content: script });
+  await page.addScriptTag({ content: script });
   const bbox = await page.evaluate(() => {
     const root = document.getElementById("root");
     const { x, y, width, height } = root.children[0].getBoundingClientRect();
