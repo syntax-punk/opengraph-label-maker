@@ -1,7 +1,6 @@
 /** @jsx jsx */
 import { jsx, Global } from "@emotion/react";
 import Textfit from "react-textfit";
-import React from "react";
 
 function App() {
   return (
