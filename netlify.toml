@@ -3,6 +3,3 @@
   base = "functions/gen-opengraph-label"
   publish = "build"
   command = "make install"
-
-[build.environment]
-  NPM_FLAGS = "--legacy-peer-deps"
