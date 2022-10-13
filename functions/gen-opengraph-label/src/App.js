@@ -80,7 +80,7 @@ function App() {
             }}
           >
             <li>image</li>
-            <li>yack</li>
+            <li>yakkk</li>
           </ul>
           <span>@theVoogie</span>
         </div>
