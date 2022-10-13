@@ -1,5 +1,4 @@
 [build]
   functions = "functions"
-  base = "functions/gen-opengraph-label"
   publish = "build"
   command = "make install"
