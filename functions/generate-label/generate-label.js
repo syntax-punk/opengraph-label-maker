@@ -1,7 +1,4 @@
 const playwright = require("playwright-aws-lambda");
-const fs = require('fs');
-const path = require('path');
-const script = fs.readFileSync(path.resolve(__dirname, "label.js"), "utf-8");
 
 exports.handler = async function(event, ctx) {
   const browser = await playwright.launchChromium();
