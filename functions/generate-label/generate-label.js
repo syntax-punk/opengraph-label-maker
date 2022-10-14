@@ -9,7 +9,7 @@ const getUrl = (queryStringParameters) => {
     width = 1200,
     height = 630,
   } = queryStringParameters;
-  return `${cardpath}?id=${id}&title=${title}&handle=${handle}&tags=${tags}&width=${width}&height=${height}`
+  return `${cardpath}?title=${title}&handle=${handle}&tags=${tags}&width=${width}&height=${height}`
 };
 
 exports.handler = async function(event, ctx) {
