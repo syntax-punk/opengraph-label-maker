@@ -1,13 +1,24 @@
 /** @jsx jsx */
 import { jsx, Global } from "@emotion/react";
 import Textfit from "react-textfit";
+import { parseParams } from "./utils";
 
 function App() {
+
+  const params = parseParams(window.location.search);
+
+  const title = params.title ? params.title : "No title";
+  const handle = params.handle ? params.handle : "";
+  const width = params.width ? params.width : 1200;
+  const height = params.height ? params.height : 630;
+  const tags = params.tags ? params.tags.split(',') : [];
+
+
   return (
     <div
       css={{
-        width: 1200,
-        height: 630,
+        width: width,
+        height: height,
         backgroundImage: `linear-gradient(135deg, rgba(29, 29, 29, 0.05) 0%, rgba(29, 29, 29, 0.05) 17%,rgba(27, 27, 27, 0.05) 17%, rgba(27, 27, 27, 0.05) 34%,rgba(31, 31, 31, 0.05) 34%, rgba(31, 31, 31, 0.05) 93%,rgba(242, 242, 242, 0.05) 93%, rgba(242, 242, 242, 0.05) 100%),linear-gradient(135deg, rgba(129, 129, 129, 0.05) 0%, rgba(129, 129, 129, 0.05) 66%,rgba(117, 117, 117, 0.05) 66%, rgba(117, 117, 117, 0.05) 91%,rgba(199, 199, 199, 0.05) 91%, rgba(199, 199, 199, 0.05) 100%),linear-gradient(135deg, rgba(31, 31, 31, 0.07) 0%, rgba(31, 31, 31, 0.07) 15%,rgba(139, 139, 139, 0.07) 15%, rgba(139, 139, 139, 0.07) 23%,rgba(200, 200, 200, 0.07) 23%, rgba(200, 200, 200, 0.07) 29%,rgba(102, 102, 102, 0.07) 29%, rgba(102, 102, 102, 0.07) 100%),linear-gradient(90deg, rgb(19, 196, 228),rgb(126, 8, 222));`,
         position: "absolute",
         display: "flex",
@@ -52,9 +63,7 @@ function App() {
               lineHeight: 1
             }}
           >
-            How to make that the yack is shaved by itself or maybe not bla bla
-            bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla
-            bla bla bla bla.
+            {title}
           </Textfit>
         </h1>
         <div
@@ -65,24 +74,23 @@ function App() {
             fontSize: 24
           }}
         >
-          <ul
-            css={{
-              listStyleType: "none",
-              display: "flex",
-              "& li": {
-                marginRight: ".5rem",
-                "&:not(:last-child):after": {
-                  content: "'·'",
-                  fontWeight: "600",
-                  marginLeft: ".5rem"
-                }
+        <ul
+          css={{
+            listStyleType: "none",
+            display: "flex",
+            "& li": {
+              marginRight: ".5rem",
+              "&:not(:last-child):after": {
+                content: "'·'",
+                fontWeight: "600",
+                marginLeft: ".5rem"
               }
-            }}
-          >
-            <li>image</li>
-            <li>yakkk</li>
-          </ul>
-          <span>@theVoogie</span>
+            }
+          }} 
+        >
+          {tags.map(tag => <li key={tag}>{tag}</li>)}
+        </ul>
+          <span>{handle && `@${handle}` }</span>
         </div>
       </div>
     </div>

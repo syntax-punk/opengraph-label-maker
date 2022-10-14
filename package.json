@@ -17,8 +17,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build && cp twitter.html ./build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "build:function": "rollup -c rollup.config.mjs"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
