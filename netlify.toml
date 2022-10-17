@@ -2,3 +2,11 @@
   command = "make install"
   publish="build"
   functions = "functions"
+
+[build.environment]
+  NODE_VERSION = "16"
+
+[[redirects]]
+    from = "/label*"
+    to = "/.netlify/functions/generate-label"
+    status = 200
