@@ -2,7 +2,7 @@ const playwright = require("playwright-aws-lambda");
 
 const getUrl = (queryStringParameters) => {
   const {
-    cardpath = "https://earnest-youtiao-7b4d2a.netlify.app",
+    cardpath = "https://nullpointer.no",
     title = "No Title",
     handle = "",
     tags = "", 
