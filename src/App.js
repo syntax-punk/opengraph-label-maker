@@ -1,5 +1,6 @@
 /** @jsx jsx */
 import { jsx, Global } from "@emotion/react";
+import React from "react";
 import Textfit from "react-textfit";
 import { parseParams } from "./utils";
 
@@ -54,51 +55,59 @@ function App() {
           100px 100px 80px rgba(0, 0, 0, 0.07)`
         }}
         >
-        <h1 css={{ color: `${pattern.textColor}`, height: "100%" }}>
-          <Textfit
-            max={256}
-            min={24}
-            style={{
-              minHeight: "80%",
-              maxHeight: "80%",
-              lineHeight: 1
-            }}
-            >
-            {title}
-          </Textfit>
-        </h1>
-        <div
-          css={{
-            color: `${pattern.textColor}`,
-            display: "flex",
-            justifyContent: "space-between",
-            fontSize: 24
-          }}
-          >
-        <ul
-          css={{
-            listStyleType: "none",
-            display: "flex",
-            "& li": {
-              marginRight: ".5rem",
-              "&:not(:last-child):after": {
-                content: "'·'",
-                fontWeight: "600",
-                marginLeft: ".5rem"
-              }
-            }
-          }} 
-          >
-          {tags.map(tag => <li key={tag}>{tag}</li>)}
-        </ul>
-          <span>{handle && `@${handle}` }</span>
-        </div>
+        {
+          title.toLowerCase() !== keyWords.blank.toLowerCase() && 
+            <React.Fragment>
+              <h1 css={{ color: `${pattern.textColor}`, height: "100%" }}>
+                <Textfit
+                  max={256}
+                  min={24}
+                  style={{
+                    minHeight: "80%",
+                    maxHeight: "80%",
+                    lineHeight: 1
+                  }}
+                >
+                  {title}
+                </Textfit>
+              </h1><div
+                css={{
+                  color: `${pattern.textColor}`,
+                  display: "flex",
+                  justifyContent: "space-between",
+                  fontSize: 24
+                }}
+              >
+                  <ul
+                    css={{
+                      listStyleType: "none",
+                      display: "flex",
+                      "& li": {
+                        marginRight: ".5rem",
+                        "&:not(:last-child):after": {
+                          content: "'·'",
+                          fontWeight: "600",
+                          marginLeft: ".5rem"
+                        }
+                      }
+                    }}
+                  >
+                    {tags.map(tag => <li key={tag}>{tag}</li>)}
+                  </ul>
+                  <span>{handle && `@${handle}`}</span>
+                </div>
+              </React.Fragment>
+        }
       </div>
     </div>
   );
 }
 
 export default App;
+
+const keyWords = {
+  blank: "_BLANK"
+}
 
 const patterns = [
   {
