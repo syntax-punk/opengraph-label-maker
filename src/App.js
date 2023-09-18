@@ -69,20 +69,7 @@ function App() {
                               fontSize: 24
                           }}
                       >
-                          <ul
-                              style={{
-                                  listStyleType: "none",
-                                  display: "flex",
-                                  "& li": {
-                                      marginRight: ".5rem",
-                                      "&:not(:last-child):after": {
-                                          content: "'·'",
-                                          fontWeight: "600",
-                                          marginLeft: ".5rem"
-                                      }
-                                  }
-                              }}
-                          >
+                          <ul className="tags-list">
                               {tags.map(tag => <li key={tag}>{tag}</li>)}
                           </ul>
                           <span>{handle && `@${handle}`}</span>
