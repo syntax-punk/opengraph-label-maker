@@ -10,3 +10,8 @@
     from = "/label*"
     to = "/.netlify/functions/generate-label"
     status = 200
+
+[[redirects]]
+    from = "/about"
+    to = "/"
+    status = 200
