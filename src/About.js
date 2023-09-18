@@ -6,8 +6,8 @@ function About() {
 
   return (
     <section className="about-container">
-      <h1><mark>la</mark>beler</h1>
-      <p>Need a nice looking label for your blogpost or a cool placeholder banner?</p>
+      <h1>labeler</h1>
+      <p>Need to a label for your blogpost or a nice placeholder?</p>
       { loaded === false && <div className="dots-loading"><div/><div/><div/></div> }
       <img 
         src="https://labeler.syntaxpunk.com/label?title=Hello world&handle=syntaxpunk&height=400&width=600&tags=react,netlify" 
