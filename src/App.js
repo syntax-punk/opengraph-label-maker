@@ -1,12 +1,11 @@
 import React from "react";
 import Textfit from "react-textfit";
 import { parseParams } from "./utils";
-import "./global.css"
+import About from "./About";
 
 function App() {
-  
   const params = parseParams(window.location.search);
-  const pattern = patterns[Math.round(Math.random() * (patterns.length - 1))]
+  const pattern = patterns[Math.round(Math.random() * (patterns.length - 1))];
 
   const title = params.title ? params.title : "No title";
   const handle = params.handle ? params.handle : "";
@@ -15,81 +14,83 @@ function App() {
   const tags = params.tags ? params.tags.split(',') : [];
 
   if (window.location.pathname.includes("/about")) {
-    return (<h1>hello</h1>)
+      return <About />;
   }
-  
+
   return (
-    <div
-    style={{
-      width: `${width}px`,
-      height: `${height}px`,
-      backgroundImage: `${pattern.gradient}`,
-      position: "absolute",
-      display: "flex",
-      overflow: "hidden"
-    }}
-    >
-      <div style={{
-          background: `${pattern.background}`,
-          margin: "40px",
-          display: "flex",
-          flex: 1,
-          flexDirection: "column",
-          justifyContent: "space-between",
-          borderRadius: "15px",
-          padding: "2rem",
-          boxShadow: `2.8px 2.8px 2.2px rgba(0, 0, 0, 0.02),
-          6.7px 6.7px 5.3px rgba(0, 0, 0, 0.028),
-          12.5px 12.5px 10px rgba(0, 0, 0, 0.035),
-          22.3px 22.3px 17.9px rgba(0, 0, 0, 0.042),
-          41.8px 41.8px 33.4px rgba(0, 0, 0, 0.05),
-          100px 100px 80px rgba(0, 0, 0, 0.07)`
-        }}>
-        {
-          title.toLowerCase() !== keyWords.blank.toLowerCase() && 
-            <React.Fragment>
-              <h1 style={{ color: `${pattern.textColor}`, height: "100%" }}>
-                <Textfit
-                  max={256}
-                  min={24}
-                  style={{
-                    minHeight: "80%",
-                    maxHeight: "80%",
-                    lineHeight: 1
-                  }}
-                >
-                  {title}
-                </Textfit>
-              </h1><div
-                style={{
-                  color: `${pattern.textColor}`,
-                  display: "flex",
-                  justifyContent: "space-between",
-                  fontSize: 24
-                }}
-              >
-                  <ul
-                    style={{
-                      listStyleType: "none",
-                      display: "flex",
-                      "& li": {
-                        marginRight: ".5rem",
-                        "&:not(:last-child):after": {
-                          content: "'·'",
-                          fontWeight: "600",
-                          marginLeft: ".5rem"
-                        }
-                      }
-                    }}
-                  >
-                    {tags.map(tag => <li key={tag}>{tag}</li>)}
-                  </ul>
-                  <span>{handle && `@${handle}`}</span>
-                </div>
-              </React.Fragment>
-        }
+      <div
+          id="label-container"
+          style={{
+              width: `${width}px`,
+              height: `${height}px`,
+              backgroundImage: `${pattern.gradient}`,
+              position: "absolute",
+              display: "flex",
+              overflow: "hidden"
+          }}
+      >
+          <div style={{
+              background: `${pattern.background}`,
+              margin: "40px",
+              display: "flex",
+              flex: 1,
+              flexDirection: "column",
+              justifyContent: "space-between",
+              borderRadius: "15px",
+              padding: "2rem",
+              boxShadow: `2.8px 2.8px 2.2px rgba(0, 0, 0, 0.02),
+              6.7px 6.7px 5.3px rgba(0, 0, 0, 0.028),
+              12.5px 12.5px 10px rgba(0, 0, 0, 0.035),
+              22.3px 22.3px 17.9px rgba(0, 0, 0, 0.042),
+              41.8px 41.8px 33.4px rgba(0, 0, 0, 0.05),
+              100px 100px 80px rgba(0, 0, 0, 0.07)`
+          }}>
+              {
+                  title.toLowerCase() !== keyWords.blank.toLowerCase() &&
+                  <React.Fragment>
+                      <h1 style={{ color: `${pattern.textColor}`, height: "100%" }}>
+                          <Textfit
+                              max={256}
+                              min={24}
+                              style={{
+                                  minHeight: "80%",
+                                  maxHeight: "80%",
+                                  lineHeight: 1
+                              }}
+                          >
+                              {title}
+                          </Textfit>
+                      </h1>
+                      <div
+                          style={{
+                              color: `${pattern.textColor}`,
+                              display: "flex",
+                              justifyContent: "space-between",
+                              fontSize: 24
+                          }}
+                      >
+                          <ul
+                              style={{
+                                  listStyleType: "none",
+                                  display: "flex",
+                                  "& li": {
+                                      marginRight: ".5rem",
+                                      "&:not(:last-child):after": {
+                                          content: "'·'",
+                                          fontWeight: "600",
+                                          marginLeft: ".5rem"
+                                      }
+                                  }
+                              }}
+                          >
+                              {tags.map(tag => <li key={tag}>{tag}</li>)}
+                          </ul>
+                          <span>{handle && `@${handle}`}</span>
+                      </div>
+                  </React.Fragment>
+              }
+          </div>
       </div>
-    </div>
   );
 }
 

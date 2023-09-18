@@ -2,7 +2,7 @@ const playwright = require("playwright-aws-lambda");
 
 const getUrl = (queryStringParameters) => {
   const {
-    cardpath = "https://nullpointer.no",
+    cardpath = "https://labeler.syntaxpunk.com",
     title = "No Title",
     handle = "",
     tags = "", 
