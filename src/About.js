@@ -24,6 +24,7 @@ function About() {
           <p>You will figure out the rest</p>
         </>
       )}
+      <span className="made-with">made with ❤️ by <a href="https://syntaxpunk.com">@syntax-punk 👀</a></span>
     </section>
   );
 }
