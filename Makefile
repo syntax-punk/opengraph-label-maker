@@ -1,2 +1,2 @@
 install:
-	npm run build && cd functions/generate-label && npm i
+	npm run build && cd functions/generate-label && npm i && npx playwright install
