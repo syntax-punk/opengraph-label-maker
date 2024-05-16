@@ -1,4 +1,4 @@
-const playwright = require("playwright-aws-lambda");
+const { chromium } = require('playwright');
 
 const getUrl = (queryStringParameters) => {
   const {
@@ -23,10 +23,10 @@ exports.handler = async function(event, ctx) {
   let screenshotBuffer = null;
 
   try {
-    browser = await playwright.launchChromium();
-    const context = await browser.newContext();
+    browser = await chromium.launch();
+    // const context = await browser.newContext();
 
-    const page = await context.newPage();
+    const page = await browser.newPage();
     await page.goto(url);
 
     const bbox = await page.evaluate(() => {
