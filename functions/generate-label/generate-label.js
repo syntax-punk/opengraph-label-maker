@@ -18,20 +18,34 @@ exports.handler = async function(event, ctx) {
   console.log('-> query string: ', queryStringParameters)
   console.log('-> url: ', url)
   console.log('-> event: ', event)
-  const browser = await playwright.launchChromium();
-  const context = await browser.newContext();
-  const page = await context.newPage();
-  await page.goto(url);
 
-  const bbox = await page.evaluate(() => {
-    const root = document.getElementById("root");
-    const { x, y, width, height } = root.children[0].getBoundingClientRect();
-    console.log('---> here you go: ', { x, y, width, height })
-    return { x, y, width, height };
-  });
+  let browser = null;
+  let screenshotBuffer = null;
 
-  const screenshotBuffer = await page.screenshot({ clip: bbox });
-  await browser.close();
+  try {
+    browser = await playwright.launchChromium();
+    const context = await browser.newContext();
+
+    const page = await context.newPage();
+    await page.goto(url);
+
+    const bbox = await page.evaluate(() => {
+      const root = document.getElementById("root");
+      const { x, y, width, height } = root.children[0].getBoundingClientRect();
+      console.log('--> here you go: ', { x, y, width, height })
+      return { x, y, width, height };
+    });
+  
+    screenshotBuffer = await page.screenshot({ clip: bbox });
+
+  } catch (error) {
+    console.error('-> [ERROR]: ', error)
+    throw error;
+  } finally {
+    if (browser) {
+      await browser.close();
+    }
+  }
 
   return {
     isBase64Encoded: true,
