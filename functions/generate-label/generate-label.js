@@ -1,4 +1,4 @@
-const { chromium } = require('playwright');
+const playwright = require("playwright-aws-lambda");
 
 const getUrl = (queryStringParameters) => {
   const {
@@ -21,12 +21,13 @@ exports.handler = async function(event, ctx) {
 
   let browser = null;
   let screenshotBuffer = null;
+  let errorMessage = '';
 
   try {
-    browser = await chromium.launch();
-    // const context = await browser.newContext();
+    browser = await playwright.launchChromium();
+    const context = await browser.newContext();
 
-    const page = await browser.newPage();
+    const page = await context.newPage();
     await page.goto(url);
 
     const bbox = await page.evaluate(() => {
@@ -37,13 +38,18 @@ exports.handler = async function(event, ctx) {
     });
   
     screenshotBuffer = await page.screenshot({ clip: bbox });
-
   } catch (error) {
     console.error('-> [ERROR]: ', error)
-    throw error;
   } finally {
     if (browser) {
       await browser.close();
+    }
+  }
+
+  if (!screenshotBuffer) {
+    return {
+      statusCode: 500,
+      body: "Server Error: " + errorMessage
     }
   }
 
